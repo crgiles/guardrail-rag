@@ -93,8 +93,16 @@ def evaluate(corpus_path: Path, cases_path: Path) -> dict:
 
 
 def main() -> None:
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Run offline Guardrail RAG evaluation")
+    parser.add_argument("--version", default="v1", choices=("v1", "v2"))
+    args = parser.parse_args()
     root = Path(__file__).parents[3]
-    report = evaluate(root / "data" / "synthetic", root / "data" / "evals" / "v1.json")
+    report = evaluate(
+        root / "data" / "synthetic",
+        root / "data" / "evals" / f"{args.version}.json",
+    )
     print(json.dumps(report, indent=2))
 
 
