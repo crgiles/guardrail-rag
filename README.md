@@ -25,4 +25,22 @@ python -m pip install -e '.[dev]'
 pytest
 ```
 
-See `docs/` for requirements, architecture, threat model, evaluation strategy, and acceptance criteria.
+Run the API locally with the deterministic fake provider:
+
+```bash
+uvicorn guardrail_rag.api.app:app --reload
+```
+
+For live generation through OpenRouter, set `GUARDRAIL_RAG_PROVIDER=openrouter`,
+`OPENROUTER_API_KEY`, and optionally `OPENROUTER_MODEL` in your environment.
+Tests never require an API key.
+
+Then query it:
+
+```bash
+curl -s http://127.0.0.1:8000/query \\
+  -H 'content-type: application/json' \\
+  -d '{"question":"What approvals are required for a production network change?","role":"network_engineer"}'
+```
+
+See `docs/` for requirements, architecture, threat model, evaluation, and acceptance criteria.
