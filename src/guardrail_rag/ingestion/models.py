@@ -9,7 +9,8 @@ VALID_STATUSES = frozenset({"approved", "draft", "superseded"})
 
 
 @dataclass(frozen=True)
-class Document:
+class Document:  # pylint: disable=too-many-instance-attributes
+    """Validated document and its authorization metadata."""
     document_id: str
     title: str
     department: str
@@ -24,6 +25,7 @@ class Document:
 
 @dataclass(frozen=True)
 class Chunk:
+    """A deterministic, authorized-retrieval unit from a document."""
     chunk_id: str
     document_id: str
     text: str
