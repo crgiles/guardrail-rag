@@ -35,6 +35,7 @@ def _cosine(left: list[float], right: list[float]) -> float:
     return sum(a * b for a, b in zip(left, right))
 
 
+# pylint: disable=duplicate-code
 def retrieve_semantic(  # pylint: disable=too-many-arguments,too-many-positional-arguments
     chunks: list[Chunk],
     query: str,

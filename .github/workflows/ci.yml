@@ -63,8 +63,8 @@ jobs:
           exit 1
       - name: Query container
         run: |
-          curl --fail --silent http://127.0.0.1:8000/query \\
-            --header 'content-type: application/json' \\
+          curl --fail --silent http://127.0.0.1:8000/query \
+            --header 'content-type: application/json' \
             --data '{"question":"What approvals are required for a production network change?","role":"network_engineer"}'
       - name: Stop container
         if: always()
