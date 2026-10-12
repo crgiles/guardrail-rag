@@ -31,6 +31,8 @@ def create_app(
     settings = Settings.from_env()
     corpus_path = Path(settings.corpus_dir)
     if not corpus_path.is_absolute():
+        # Resolve relative paths from the repository root, not the process
+        # working directory, so launching the service from elsewhere is safe.
         corpus_path = _DEFAULT_CORPUS.parent.parent / corpus_path
     store = store or load_corpus(corpus_path)
     if provider is None:
@@ -40,6 +42,7 @@ def create_app(
 
     @factory_app.middleware("http")
     async def request_logging(request: Request, call_next):
+        """Attach a correlation ID and log safe request metadata."""
         request_id = request.headers.get("x-request-id", str(uuid4()))
         started = time.perf_counter()
         try:
@@ -68,6 +71,8 @@ def create_app(
     @factory_app.post("/query", response_model=QueryResponse)
     def query(request: QueryRequest) -> QueryResponse:
         """Retrieve authorized evidence and generate a grounded response."""
+        # Retrieval performs authorization before ranking; the provider only
+        # receives this already-filtered evidence set.
         chunks = retrieve(list(store.chunks), request.question, request.role)
         try:
             result = provider.answer(request.question, chunks)

@@ -8,10 +8,10 @@
   },
   {
     "id": "answer-002",
-    "question": "What is required for an emergency network change?",
+    "question": "What emergency network change procedure is required?",
     "role": "employee",
     "expected": "answer",
-    "source_ids": ["net-change-policy-003"]
+    "source_ids": ["net-change-policy-003", "network-policy-002"]
   },
   {
     "id": "answer-003",

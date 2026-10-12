@@ -17,6 +17,7 @@ def _family_key(document: Document) -> str:
 
 
 def _select_current(documents: Iterable[Document]) -> list[Document]:
+    """Keep one approved document per supersession family."""
     grouped: dict[str, list[Document]] = {}
     for document in documents:
         grouped.setdefault(_family_key(document), []).append(document)
@@ -62,6 +63,8 @@ class DocumentStore:
 
 def load_corpus(directory: Path) -> DocumentStore:
     """Load all Markdown files beneath directory into a validated store."""
+    # The caller supplies the boundary of the corpus; only direct Markdown
+    # children are loaded so an accidental nested or unrelated file is ignored.
     if not directory.is_dir():
         raise CorpusError(f"corpus directory does not exist: {directory}")
     paths = sorted(directory.glob("*.md"))

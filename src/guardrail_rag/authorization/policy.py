@@ -10,4 +10,6 @@ def is_authorized(chunk: Chunk, caller_role: str) -> bool:
 
 def filter_authorized(chunks: list[Chunk], caller_role: str) -> list[Chunk]:
     """Return only chunks authorized for the caller role."""
+    # Keep this filter separate from scoring: unauthorized text must never
+    # influence ranking or reach a provider, even as a high-scoring distractor.
     return [chunk for chunk in chunks if is_authorized(chunk, caller_role)]

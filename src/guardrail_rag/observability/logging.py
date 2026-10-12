@@ -10,6 +10,7 @@ class JsonFormatter(logging.Formatter):
     """Format allowlisted fields as one JSON object per log line."""
 
     def format(self, record: logging.LogRecord) -> str:
+        """Serialize only standard fields plus the caller's safe allowlist."""
         payload: dict[str, object] = {
             "level": record.levelname,
             "logger": record.name,
@@ -35,7 +36,7 @@ def configure_logging() -> None:
 def request_fields(
     request_id: str, method: str, path: str, status: int, started: float
 ) -> dict[str, object]:
-    """Return safe request fields; never include query, body, or headers."""
+    """Return correlation and timing fields, excluding sensitive request data."""
     return {
         "request_id": request_id,
         "method": method,

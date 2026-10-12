@@ -15,5 +15,6 @@ class GenerationResult:
 
 class AnswerProvider(Protocol):  # pylint: disable=too-few-public-methods
     """Interface implemented by grounded answer providers."""
+
     def answer(self, question: str, chunks: list[Chunk]) -> GenerationResult:
         """Generate an answer using only the supplied authorized chunks."""

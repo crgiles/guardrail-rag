@@ -48,11 +48,14 @@ def evaluate(corpus_path: Path, cases_path: Path) -> dict:  # pylint: disable=to
 
     for case in cases:
         started = time.perf_counter()
+        # The offline runner uses the same authorization and provider boundary
+        # as the API, making each case a check of the full safety path.
         chunks = retrieve(list(store.chunks), case.question, case.role)
         generation = provider.answer(case.question, chunks)
         actual = "refusal" if generation.refusal_reason else "answer"
         actual_ids = {chunk.document_id for chunk in chunks}
-        # Refusals must not emit citations, even if lexical retrieval found noise.
+        # A refusal is valid without sources; an answer is valid only when all
+        # retrieved documents are among the case's expected source IDs.
         citations_valid = (
             actual == "refusal"
             or actual_ids <= set(case.source_ids)

@@ -22,6 +22,7 @@ class OpenRouterProvider:  # pylint: disable=too-few-public-methods
         model: str | None = None,
         timeout: float = 30.0,
     ) -> None:
+        """Configure the provider without exposing credentials in its state or logs."""
         self.api_key = api_key or os.getenv("OPENROUTER_API_KEY")
         self.model = model or os.getenv("OPENROUTER_MODEL", "openai/gpt-4o-mini")
         self.timeout = timeout
@@ -39,6 +40,8 @@ class OpenRouterProvider:  # pylint: disable=too-few-public-methods
         evidence = "\n\n".join(
             f"[{chunk.chunk_id}] {chunk.text}" for chunk in chunks
         )
+        # Evidence is explicitly untrusted because corpus text may contain
+        # instructions; the system message prevents it from becoming policy.
         payload = {
             "model": self.model,
             "temperature": 0,
@@ -71,6 +74,8 @@ class OpenRouterProvider:  # pylint: disable=too-few-public-methods
             method="POST",
         )
         try:
+            # Use a finite timeout and translate transport/JSON failures into
+            # one application-level error that callers can handle safely.
             with request.urlopen(http_request, timeout=self.timeout) as response:
                 body = json.loads(response.read().decode("utf-8"))
         except (error.URLError, TimeoutError, json.JSONDecodeError) as exc:
