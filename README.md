@@ -58,6 +58,11 @@ python -m guardrail_rag.evaluation.runner
 
 It emits JSON metrics for retrieval, citations, refusals, and unauthorized retrieval.
 
+The project also includes a deterministic local embedding baseline in
+`guardrail_rag.retrieval.embeddings`. It requires no model download or network
+access and is intended for comparison against lexical retrieval before adding a
+managed embedding service.
+
 Then query it:
 
 ```bash

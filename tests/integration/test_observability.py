@@ -1,4 +1,7 @@
-"""Integration tests for safe request observability and provider failures."""
+"""Integration tests for safe request observability and provider failures.
+
+# pylint: disable=duplicate-code
+"""
 
 import json
 import logging
