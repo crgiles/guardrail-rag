@@ -35,6 +35,14 @@ For live generation through OpenRouter, set `GUARDRAIL_RAG_PROVIDER=openrouter`,
 `OPENROUTER_API_KEY`, and optionally `OPENROUTER_MODEL` in your environment.
 Tests never require an API key.
 
+Run the offline evaluation harness:
+
+```bash
+python -m guardrail_rag.evaluation.runner
+```
+
+It emits JSON metrics for retrieval, citations, refusals, and unauthorized retrieval.
+
 Then query it:
 
 ```bash
