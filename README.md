@@ -25,6 +25,12 @@ python -m pip install -e '.[dev]'
 pytest
 ```
 
+Run the complete local quality gate:
+
+```bash
+./scripts/check.sh
+```
+
 Run the API locally with the deterministic fake provider:
 
 ```bash
