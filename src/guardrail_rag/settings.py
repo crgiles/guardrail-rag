@@ -10,6 +10,7 @@ class Settings:
     environment: str = "development"
     database_url: str = "sqlite:///./guardrail-rag.sqlite3"
     provider: str = "fake"
+    corpus_dir: str = "data/synthetic"
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -18,4 +19,5 @@ class Settings:
             environment=os.getenv("GUARDRAIL_RAG_ENV", cls.environment),
             database_url=os.getenv("GUARDRAIL_RAG_DATABASE_URL", cls.database_url),
             provider=os.getenv("GUARDRAIL_RAG_PROVIDER", cls.provider),
+            corpus_dir=os.getenv("GUARDRAIL_RAG_CORPUS_DIR", cls.corpus_dir),
         )

@@ -28,9 +28,12 @@ def create_app(
     provider: AnswerProvider | None = None,
 ) -> FastAPI:
     """Create the FastAPI application with injectable store and provider."""
-    store = store or load_corpus(_DEFAULT_CORPUS)
+    settings = Settings.from_env()
+    corpus_path = Path(settings.corpus_dir)
+    if not corpus_path.is_absolute():
+        corpus_path = _DEFAULT_CORPUS.parent.parent / corpus_path
+    store = store or load_corpus(corpus_path)
     if provider is None:
-        settings = Settings.from_env()
         provider = OpenRouterProvider() if settings.provider == "openrouter" else FakeProvider()
     configure_logging()
     factory_app = FastAPI(title="Guardrail RAG", version="0.1.0")
