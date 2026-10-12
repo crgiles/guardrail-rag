@@ -18,6 +18,7 @@ _FRONTMATTER = re.compile(r"\A---\s*\n(.*?)\n---\s*\n(.*)\Z", re.DOTALL)
 
 
 def parse_markdown(path: Path) -> Document:
+    """Parse and validate one Markdown document with YAML frontmatter."""
     match = _FRONTMATTER.match(path.read_text(encoding="utf-8"))
     if not match:
         raise ValueError(f"{path.name}: YAML frontmatter is required")
@@ -61,6 +62,7 @@ def parse_markdown(path: Path) -> Document:
 
 
 def chunk_document(document: Document, max_words: int = 120) -> list[Chunk]:
+    """Split a document into deterministic chunks of at most ``max_words``."""
     if max_words < 1:
         raise ValueError("max_words must be positive")
     words = document.content.split()

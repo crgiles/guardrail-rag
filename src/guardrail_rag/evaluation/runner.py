@@ -1,5 +1,6 @@
 """Offline evaluation runner for retrieval, citations, and refusal behavior."""
 
+import argparse
 import json
 import time
 from dataclasses import asdict, dataclass
@@ -12,6 +13,7 @@ from guardrail_rag.retrieval.simple import retrieve
 
 @dataclass(frozen=True)
 class EvaluationCase:
+    """One expected retrieval and generation behavior case."""
     id: str
     question: str
     role: str
@@ -21,6 +23,7 @@ class EvaluationCase:
 
 @dataclass(frozen=True)
 class CaseResult:
+    """Observed outcome for one evaluation case."""
     id: str
     passed: bool
     expected: str
@@ -31,11 +34,13 @@ class CaseResult:
 
 
 def load_cases(path: Path) -> list[EvaluationCase]:
+    """Load evaluation cases from a JSON file."""
     records = json.loads(path.read_text(encoding="utf-8"))
     return [EvaluationCase(**record) for record in records]
 
 
-def evaluate(corpus_path: Path, cases_path: Path) -> dict:
+def evaluate(corpus_path: Path, cases_path: Path) -> dict:  # pylint: disable=too-many-locals
+    """Evaluate retrieval and refusal behavior against a corpus and cases."""
     store = load_corpus(corpus_path)
     provider = FakeProvider()
     cases = load_cases(cases_path)
@@ -93,8 +98,7 @@ def evaluate(corpus_path: Path, cases_path: Path) -> dict:
 
 
 def main() -> None:
-    import argparse
-
+    """Run the selected offline evaluation version and print JSON."""
     parser = argparse.ArgumentParser(description="Run offline Guardrail RAG evaluation")
     parser.add_argument("--version", default="v1", choices=("v1", "v2"))
     args = parser.parse_args()

@@ -1,3 +1,5 @@
+# pylint: disable=missing-module-docstring,missing-function-docstring,missing-class-docstring,unused-argument,redefined-outer-name
+
 import json
 from datetime import date
 

@@ -11,6 +11,7 @@ def _terms(text: str) -> set[str]:
 
 
 def retrieve(chunks: list[Chunk], query: str, caller_role: str, limit: int = 1) -> list[Chunk]:
+    """Return top lexical matches after filtering by caller authorization."""
     if not query.strip():
         raise ValueError("query cannot be empty")
     if limit < 1:

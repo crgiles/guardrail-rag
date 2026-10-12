@@ -1,3 +1,5 @@
+# pylint: disable=missing-module-docstring,missing-function-docstring,line-too-long
+
 from datetime import date
 from pathlib import Path
 

@@ -21,18 +21,21 @@ def create_app(
     store: DocumentStore | None = None,
     provider: AnswerProvider | None = None,
 ) -> FastAPI:
+    """Create the FastAPI application with injectable store and provider."""
     store = store or load_corpus(_DEFAULT_CORPUS)
     if provider is None:
         settings = Settings.from_env()
         provider = OpenRouterProvider() if settings.provider == "openrouter" else FakeProvider()
-    app = FastAPI(title="Guardrail RAG", version="0.1.0")
+    factory_app = FastAPI(title="Guardrail RAG", version="0.1.0")
 
-    @app.get("/health")
+    @factory_app.get("/health")
     def health() -> dict[str, str]:
+        """Report service health."""
         return {"status": "ok"}
 
-    @app.post("/query", response_model=QueryResponse)
+    @factory_app.post("/query", response_model=QueryResponse)
     def query(request: QueryRequest) -> QueryResponse:
+        """Retrieve authorized evidence and generate a grounded response."""
         chunks = retrieve(list(store.chunks), request.question, request.role)
         result = provider.answer(request.question, chunks)
         citations = [
@@ -51,7 +54,7 @@ def create_app(
             refusal_reason=result.refusal_reason,
         )
 
-    return app
+    return factory_app
 
 
 app = create_app()

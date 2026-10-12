@@ -17,10 +17,11 @@ def _looks_like_injection(question: str) -> bool:
     return any(re.search(pattern, question, re.IGNORECASE) for pattern in _INJECTION_PATTERNS)
 
 
-class FakeProvider:
+class FakeProvider:  # pylint: disable=too-few-public-methods
     """Return an auditable answer assembled only from retrieved chunks."""
 
     def answer(self, question: str, chunks: list[Chunk]) -> GenerationResult:
+        """Generate a deterministic grounded answer or refusal."""
         if _looks_like_injection(question):
             return GenerationResult(
                 answer="I can't comply with an instruction to bypass safeguards.",

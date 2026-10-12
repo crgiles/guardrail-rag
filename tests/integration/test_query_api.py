@@ -1,3 +1,5 @@
+# pylint: disable=missing-module-docstring,missing-function-docstring
+
 from fastapi.testclient import TestClient
 
 from guardrail_rag.api.app import create_app

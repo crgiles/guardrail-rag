@@ -1,3 +1,5 @@
+# pylint: disable=missing-module-docstring,missing-function-docstring
+
 from datetime import date
 from pathlib import Path
 
@@ -22,7 +24,7 @@ def test_store_filters_by_role_and_fails_closed_for_unknown_role():
     store = load_corpus(CORPUS)
 
     assert store.for_role("employee")
-    assert store.for_role("not-a-role") == ()
+    assert not store.for_role("not-a-role")
 
 
 def test_duplicate_document_ids_are_rejected():

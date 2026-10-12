@@ -35,6 +35,7 @@ class DocumentStore:
     """Immutable in-memory store of the current approved document corpus."""
 
     def __init__(self, documents: Iterable[Document]):
+        """Create a store after validating document identifiers and versions."""
         documents = list(documents)
         ids = [document.document_id for document in documents]
         if len(ids) != len(set(ids)):
@@ -46,10 +47,12 @@ class DocumentStore:
 
     @property
     def documents(self) -> tuple[Document, ...]:
+        """Return the current approved documents."""
         return self._documents
 
     @property
     def chunks(self) -> tuple[Chunk, ...]:
+        """Return all chunks from the current approved documents."""
         return self._chunks
 
     def for_role(self, role: str) -> tuple[Chunk, ...]:

@@ -8,10 +8,12 @@ from guardrail_rag.ingestion.models import Chunk
 
 @dataclass(frozen=True)
 class GenerationResult:
+    """Result of answer generation, including any refusal reason."""
     answer: str
     refusal_reason: str | None = None
 
 
-class AnswerProvider(Protocol):
+class AnswerProvider(Protocol):  # pylint: disable=too-few-public-methods
+    """Interface implemented by grounded answer providers."""
     def answer(self, question: str, chunks: list[Chunk]) -> GenerationResult:
         """Generate an answer using only the supplied authorized chunks."""

@@ -1,3 +1,5 @@
+# pylint: disable=missing-module-docstring,missing-function-docstring
+
 from guardrail_rag import __version__
 from guardrail_rag.settings import Settings
 
