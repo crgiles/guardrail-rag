@@ -9,5 +9,4 @@ htmlcov/
 .DS_Store
 *.sqlite3
 results/
-
 *.egg-info/

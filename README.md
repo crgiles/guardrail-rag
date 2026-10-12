@@ -33,6 +33,15 @@ Run the complete local quality gate:
 
 Run the API locally with the deterministic fake provider:
 
+Run it in Docker:
+
+```bash
+docker compose up --build
+curl http://127.0.0.1:8000/health
+```
+
+The container defaults to the fake provider and does not require credentials.
+
 ```bash
 uvicorn guardrail_rag.api.app:app --reload
 ```

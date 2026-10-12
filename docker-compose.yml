@@ -1,0 +1,14 @@
+services:
+  guardrail-rag:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      GUARDRAIL_RAG_PROVIDER: "${GUARDRAIL_RAG_PROVIDER:-fake}"
+      OPENROUTER_API_KEY: "${OPENROUTER_API_KEY:-}"
+      OPENROUTER_MODEL: "${OPENROUTER_MODEL:-openai/gpt-4o-mini}"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
